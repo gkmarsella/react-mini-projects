@@ -10,10 +10,9 @@ function App() {
 
   const [error, setError] = useState('');
 
-  // TODO: function to add a new task
   const handleAddTask = () => {
     if (task.trim() !== '' && !tasks.includes(task.trim())) {
-      setTasks([...tasks, task]);
+      setTasks([...tasks, {text: task, complete: false}]);
       setTask('');
       setError('');
     } else {
@@ -25,11 +24,19 @@ function App() {
     }
   };
 
-  // TODO: function to delete a task
-
   const handleDeleteTask = (index) => {
-    console.log(tasks[index])
     const newTasks = tasks.filter((t, i) => i !== index);
+    setTasks(newTasks)
+  }
+
+  const handleCompleteTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].complete = !updatedTasks[index].complete
+    setTasks(updatedTasks)
+  }
+
+  const handleClearCompletedTasks = () => {
+    const newTasks = tasks.filter((t) => t.complete == false)
     setTasks(newTasks)
   }
 
@@ -52,11 +59,19 @@ function App() {
       <ul>
         {tasks.map((t, index) => 
           <li key={index}>
-            {t} 
+            <input 
+              type="checkbox"
+              checked={t.complete}
+              onChange={() => handleCompleteTask(index)}
+            />
+            {t.text} 
             <button onClick={() => handleDeleteTask(index)}>-</button></li>
         )}
       </ul>
       <p>{error}</p>
+      <div>
+        <button onClick={() => handleClearCompletedTasks()}>Clear Completed Tasks</button>
+      </div>
     </div>
   );
 }
