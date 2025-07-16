@@ -8,19 +8,28 @@ function App() {
   // One state for the list of tasks
   const [tasks, setTasks] = useState([]);
 
+  const [error, setError] = useState('');
+
   // TODO: function to add a new task
   const handleAddTask = () => {
-    if (task.trim() !== '') {
+    if (task.trim() !== '' && !tasks.includes(task.trim())) {
       setTasks([...tasks, task]);
       setTask('');
+      setError('');
+    } else {
+      if (task.trim() == ''){
+        setError('Please enter a task!')
+      } else {
+        setError("Task already exists!")
+      }
     }
   };
 
   // TODO: function to delete a task
 
   const handleDeleteTask = (index) => {
-    const newTasks = tasks.filter((_, i) => i !== index);
-    console.log(index)
+    console.log(tasks[index])
+    const newTasks = tasks.filter((t, i) => i !== index);
     setTasks(newTasks)
   }
 
@@ -47,6 +56,7 @@ function App() {
             <button onClick={() => handleDeleteTask(index)}>-</button></li>
         )}
       </ul>
+      <p>{error}</p>
     </div>
   );
 }
